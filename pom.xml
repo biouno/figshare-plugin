@@ -15,8 +15,8 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>hpi</packaging>
 	
-	<name>FigShare Plug-in</name>
-    <description>This plug-in integrates Jenkins and FigShare.</description>
+	<name>figshare Plug-in</name>
+    <description>This plug-in integrates Jenkins and figshare.</description>
 
     <url>https://github.com/biouno/figshare-plugin</url>
 
