@@ -14,53 +14,58 @@
 	<artifactId>figshare-plugin</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>hpi</packaging>
-	
+
 	<name>figshare Plug-in</name>
-    <description>This plug-in integrates Jenkins and figshare.</description>
+	<description>This plug-in integrates Jenkins and figshare.</description>
 
-    <url>https://github.com/biouno/figshare-plugin</url>
+	<url>https://github.com/biouno/figshare-plugin</url>
 
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/biouno/figshare-plugin/issues</url>
-    </issueManagement>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/biouno/figshare-plugin/issues</url>
+	</issueManagement>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-    <scm>
-        <connection>scm:git:git://github.com/biouno/figshare-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:biouno/figshare-plugin.git</developerConnection>
-        <url>http://github.com/biouno/figshare-plugin</url>
-        <tag>HEAD</tag>
-    </scm>
+	<scm>
+		<connection>scm:git:git://github.com/biouno/figshare-plugin.git</connection>
+		<developerConnection>scm:git:git@github.com:biouno/figshare-plugin.git</developerConnection>
+		<url>http://github.com/biouno/figshare-plugin</url>
+		<tag>HEAD</tag>
+	</scm>
 
-    <developers>
-        <developer>
-            <id>kinow</id>
-            <name>Bruno P. Kinoshita</name>
-            <timezone>Pacific/Auckland</timezone>
-        </developer>
-    </developers>
+	<developers>
+		<developer>
+			<id>kinow</id>
+			<name>Bruno P. Kinoshita</name>
+			<timezone>Pacific/Auckland</timezone>
+		</developer>
+	</developers>
 
-    <dependencies>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>credentials</artifactId>
+			<version>1.22</version>
+		</dependency>
+	</dependencies>
 
-    <!-- get every artifact through repo.jenkins-ci.org, which proxies all the 
-        artifacts that we need -->
-    <repositories>
-        <repository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-        </repository>
-    </repositories>
+	<!-- get every artifact through repo.jenkins-ci.org, which proxies all the 
+		artifacts that we need -->
+	<repositories>
+		<repository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</repository>
+	</repositories>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repo.jenkins-ci.org</id>
-            <url>http://repo.jenkins-ci.org/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repo.jenkins-ci.org</id>
+			<url>http://repo.jenkins-ci.org/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 </project>
