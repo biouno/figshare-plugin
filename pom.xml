@@ -50,6 +50,11 @@
 			<artifactId>credentials</artifactId>
 			<version>1.22</version>
 		</dependency>
+		<dependency>
+			<groupId>org.biouno</groupId>
+			<artifactId>figshare-java-api</artifactId>
+			<version>0.1</version>
+		</dependency>
 	</dependencies>
 
 	<!-- get every artifact through repo.jenkins-ci.org, which proxies all the 

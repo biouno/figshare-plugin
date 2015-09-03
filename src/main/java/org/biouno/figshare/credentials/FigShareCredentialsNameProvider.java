@@ -21,36 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.biouno.figshare;
+package org.biouno.figshare.credentials;
 
-import java.io.IOException;
-
-import hudson.Launcher;
-import hudson.model.AbstractBuild;
-import hudson.model.BuildListener;
-import hudson.tasks.BuildStepMonitor;
-import hudson.tasks.Notifier;
+import com.cloudbees.plugins.credentials.CredentialsNameProvider;
 
 /**
- * Notifier to send artifact to figshare, such as pictures, graphs and other
- * data related files.
+ * <p>
+ * Figshare credentials name provider.
+ * </p>
+ * 
+ * <p>
+ * This is used to provide a name to each credential, so that it can be used in
+ * places such as Jenkins UI, for picking one credential.
+ * </p>
  *
- * @author kinow
+ * @author Bruno P. Kinoshita
  * @since 0.1
  */
-@SuppressWarnings("unchecked")
-public class FigshareNotifier extends Notifier {
+public class FigShareCredentialsNameProvider extends CredentialsNameProvider<FigShareOauthCredentials> {
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.cloudbees.plugins.credentials.CredentialsNameProvider#getName(com.cloudbees.plugins.credentials.Credentials)
+	 */
 	@Override
-	public BuildStepMonitor getRequiredMonitorService() {
-		return BuildStepMonitor.NONE;
-	}
-
-	@Override
-	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
-			throws InterruptedException, IOException {
-		// TODO Auto-generated method stub
-		return super.perform(build, launcher, listener);
+	public String getName(FigShareOauthCredentials figshareOauthCredential) {
+		return figshareOauthCredential.getName();
 	}
 
 }
