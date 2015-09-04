@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:st="jelly:stapler">
+    <f:entry title="Name" field="name">
+        <f:textbox/>
+    </f:entry>
+    <f:entry title="Description" field="description">
+        <f:textbox/>
+    </f:entry>
+    <f:entry title="Client Key" field="clientKey">
+        <f:textbox/>
+    </f:entry>
+    <f:entry title="Client Secret" field="clientSecret">
+        <f:password/>
+    </f:entry>
+    <f:entry title="Token Key" field="tokenKey">
+        <f:textbox/>
+    </f:entry>
+    <f:entry title="Token Secret" field="tokenSecret">
+        <f:password/>
+    </f:entry>
+</j:jelly>
