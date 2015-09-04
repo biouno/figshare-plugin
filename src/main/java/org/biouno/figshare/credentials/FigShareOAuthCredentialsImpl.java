@@ -23,6 +23,8 @@
  */
 package org.biouno.figshare.credentials;
 
+import org.kohsuke.stapler.DataBoundConstructor;
+
 import com.cloudbees.plugins.credentials.CredentialsDescriptor;
 import com.cloudbees.plugins.credentials.NameWith;
 import com.cloudbees.plugins.credentials.impl.BaseStandardCredentials;
@@ -59,6 +61,7 @@ public class FigShareOAuthCredentialsImpl extends BaseStandardCredentials implem
 	@NonNull
 	private final Secret tokenSecret;
 
+	@DataBoundConstructor
 	public FigShareOAuthCredentialsImpl(@CheckForNull String id,
 			@NonNull @CheckForNull String name, 
 			@CheckForNull String description, 
