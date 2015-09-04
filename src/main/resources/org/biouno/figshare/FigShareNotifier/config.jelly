@@ -1,0 +1,29 @@
+<j:jelly xmlns:j="jelly:core"
+         xmlns:st="jelly:stapler"
+         xmlns:d="jelly:define"
+         xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson"
+         xmlns:f="/lib/form"
+         xmlns:c="/lib/credentials">
+    <!--
+      This jelly script is used for per-project configuration.
+      See global.jelly for a general discussion about jelly script.
+    -->
+
+    <f:entry title="figshare OAuth Credentials" field="credentialsId">
+        <c:select/>
+    </f:entry>
+
+    <f:entry title="figshare Article title" field="articleTitle">
+        <f:textbox/>
+    </f:entry>
+
+    <f:entry title="figshare Article description" field="articleDescription">
+        <f:textbox/>
+    </f:entry>
+
+    <f:entry title="Pattern (ant-like) to find files in the workspace" field="antPattern">
+        <f:textbox/>
+    </f:entry>
+
+</j:jelly>
