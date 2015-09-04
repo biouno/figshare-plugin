@@ -40,7 +40,7 @@ import hudson.util.Secret;
  * @author Bruno P. Kinoshita
  * @since 0.1
  */
-@NameWith(value = FigShareCredentialsNameProvider.class, priority = 50)
+@NameWith(value = FigShareCredentialsNameProvider.class)
 public class FigShareOAuthCredentialsImpl extends BaseStandardCredentials implements FigShareOauthCredentials {
 
 	/*
