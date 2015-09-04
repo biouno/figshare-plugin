@@ -23,13 +23,20 @@
  */
 package org.biouno.figshare;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.FileSet;
 import org.biouno.figshare.credentials.FigShareOauthCredentials;
+import org.biouno.figshare.v1.model.Article;
+import org.jenkinsci.remoting.RoleChecker;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import com.cloudbees.plugins.credentials.CredentialsMatchers;
@@ -37,9 +44,13 @@ import com.cloudbees.plugins.credentials.CredentialsProvider;
 import com.cloudbees.plugins.credentials.domains.DomainRequirement;
 
 import hudson.FilePath;
+import hudson.FilePath.FileCallable;
 import hudson.Launcher;
+import hudson.Util;
+import hudson.maven.agent.AbortException;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
+import hudson.remoting.VirtualChannel;
 import hudson.security.ACL;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Notifier;
@@ -49,7 +60,7 @@ import jenkins.model.Jenkins;
  * Notifier to send artifact to figshare, such as pictures, graphs and other
  * data related files.
  *
- * @author kinow
+ * @author Bruno P. Kinoshita
  * @since 0.1
  */
 @SuppressWarnings("unchecked")
@@ -73,11 +84,10 @@ public class FigShareNotifier extends Notifier {
 	 * Ant pattern to locate files.
 	 */
 	private final String antPattern;
-
 	/**
-	 * figshare API.
+	 * Credential used.
 	 */
-	private final FigShareClient figshare;
+	private final FigShareOauthCredentials credential;
 
 	@DataBoundConstructor
 	public FigShareNotifier(String credentialsId, String articleTitle, String articleDescription, String antPattern) {
@@ -93,20 +103,11 @@ public class FigShareNotifier extends Notifier {
 		FigShareOauthCredentials credential = CredentialsMatchers.firstOrNull(credentials,
 				CredentialsMatchers.allOf(CredentialsMatchers.withId(credentialsId)));
 
-		if (null != credential) {
-			// TBD: externalise this as an advanced option in the job
-			// configuration
-			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.log(Level.FINE, "Initialising the figshare API");
-			}
-			figshare = FigShareClient.to("http://api.figshare.com/", 1, credential.getClientKey(),
-					credential.getClientSecret().getPlainText(), credential.getTokenKey(),
-					credential.getTokenSecret().getPlainText());
-		} else {
+		this.credential = credential;
+		if (null == credential) {
 			LOGGER.warning(String.format(
 					"Could not locate credential with ID %s. figshare integration is disabled for this notifier",
 					credentialsId));
-			figshare = null;
 		}
 	}
 
@@ -147,18 +148,112 @@ public class FigShareNotifier extends Notifier {
 	public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener)
 			throws InterruptedException, IOException {
 		listener.getLogger().println("Looking for files to upload to figshare...");
-		FilePath workspace = build.getWorkspace();
-		if (null != workspace) {
-			FilePath[] files = workspace.list(antPattern);
-			if (null != files && files.length > 0) {
-				for (FilePath file : files) {
-					
+		// TBD: if users ask to fail the build when figshare is not executed,
+		// let's make
+		// that a feature. Not right now.
+		if (null != credential) {
+			FilePath workspace = build.getWorkspace();
+			if (null != workspace) {
+				FilePath[] files = workspace.list(antPattern);
+				if (null != files && files.length > 0) {
+					if (LOGGER.isLoggable(Level.FINEST)) {
+						LOGGER.log(Level.FINEST, "Creating FileCallable...");
+					}
+					FigShareCallable callable = new FigShareCallable(antPattern, articleTitle, articleDescription,
+							credential, listener.getLogger());
+					if (LOGGER.isLoggable(Level.FINEST)) {
+						LOGGER.log(Level.FINEST, "Calling FileCallable...");
+					}
+					try {
+						workspace.act(callable);
+					} catch (RuntimeException re) {
+						LOGGER.log(Level.WARNING, "Error executing figshare: " + re.getMessage(), re);
+						throw new AbortException("Error executing figshare: " + re.getMessage(), re);
+					}
+				} else {
+					listener.getLogger().println("No files found. Skip creating an empty figshare article.");
 				}
 			} else {
-				listener.getLogger().println("No files found. Skip creating an empty figshare article");
+				listener.getLogger().println("Missing workspace. Skip creating an empty figshare article.");
 			}
+		} else {
+			listener.getLogger().println("No credentials found. Skipping figshare post build step.");
 		}
-		return false;
+		return Boolean.TRUE;
+	}
+
+	/**
+	 * {#link FileCallable} used to execute upload in the slave with the files.
+	 * 
+	 * @author Bruno P. Kinoshita
+	 * @since 0.1
+	 */
+	private static final class FigShareCallable implements FileCallable<Void> {
+
+		/*
+		 * Serial UID.
+		 */
+		private static final long serialVersionUID = 5511693287716237552L;
+
+		private final String includes;
+		private final String title;
+		private final String description;
+
+		private final PrintStream ps;
+
+		private final FigShareOauthCredentials credential;
+
+		private static final String FIGSHARE_ARTICLE_DEFAULT_TYPE = "dataset";
+
+		FigShareCallable(String includes, String title, String description, FigShareOauthCredentials credential,
+				PrintStream ps) {
+			this.includes = includes;
+			this.title = title;
+			this.description = description;
+			this.credential = credential;
+			this.ps = ps;
+		}
+
+		@Override
+		public void checkRoles(RoleChecker checker) throws SecurityException {
+		}
+
+		@Override
+		public Void invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
+			FileSet fs = Util.createFileSet(f, includes, null);
+			fs.setDefaultexcludes(/* defaultExcludes */ true);
+			DirectoryScanner ds = fs.getDirectoryScanner(new Project());
+			String[] files = ds.getIncludedFiles();
+			if (null != files && files.length > 0) {
+				// TBD: externalise this as an advanced option in the job
+				// configuration
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.log(Level.FINE, "Initialising the figshare API");
+				}
+				final FigShareClient figshare = FigShareClient.to("http://api.figshare.com/", 1,
+						credential.getClientKey(), credential.getClientSecret().getPlainText(),
+						credential.getTokenKey(), credential.getTokenSecret().getPlainText());
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.log(Level.FINE, String.format("Creating article %s, description: %s", title, description));
+				}
+				Article article = figshare.createArticle(title, description, FIGSHARE_ARTICLE_DEFAULT_TYPE);
+				ps.println(String.format("Article %d created!", article.getArticleId()));
+				if (LOGGER.isLoggable(Level.FINE)) {
+					LOGGER.log(Level.FINE, "Uploading files...");
+				}
+				for (final String file : files) {
+					final File fileToUpload = new File(f, file);
+					org.biouno.figshare.v1.model.File uploaded = figshare.uploadFile(article.getArticleId(),
+							fileToUpload);
+					ps.println(String.format("File %s/%d uploaded as %s to article %d", uploaded.getName(),
+							uploaded.getSize(), uploaded.getMimeType(), article.getArticleId()));
+				}
+			} else {
+				ps.println(String.format("No files found for pattern %s", includes));
+			}
+			return null;
+		}
+
 	}
 
 }
