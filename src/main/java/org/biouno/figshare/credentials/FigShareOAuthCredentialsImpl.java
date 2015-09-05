@@ -43,95 +43,92 @@ import hudson.util.Secret;
 @NameWith(value = FigShareCredentialsNameProvider.class)
 public class FigShareOAuthCredentialsImpl extends BaseStandardCredentials implements FigShareOauthCredentials {
 
-	/*
-	 * Serial UID. 
-	 */
-	private static final long serialVersionUID = -6838004725741084526L;
+    /*
+     * Serial UID.
+     */
+    private static final long serialVersionUID = -6838004725741084526L;
 
-	@NonNull
-	private final String name;
-	@NonNull
-	private final String description;
-	@NonNull
-	private final String clientKey;
-	@NonNull
-	private final Secret clientSecret;
-	@NonNull
-	private final String tokenKey;
-	@NonNull
-	private final Secret tokenSecret;
+    @NonNull
+    private final String name;
+    @NonNull
+    private final String description;
+    @NonNull
+    private final String clientKey;
+    @NonNull
+    private final Secret clientSecret;
+    @NonNull
+    private final String tokenKey;
+    @NonNull
+    private final Secret tokenSecret;
 
-	@DataBoundConstructor
-	public FigShareOAuthCredentialsImpl(@CheckForNull String id,
-			@NonNull @CheckForNull String name, 
-			@CheckForNull String description, 
-			@CheckForNull String clientKey, 
-			@CheckForNull String clientSecret,
-			@CheckForNull String tokenKey, 
-			@CheckForNull String tokenSecret) {
-		super(id, name);
-		this.name = name;
-		this.description = description;
-		this.clientKey = clientKey;
-		this.clientSecret = Secret.fromString(clientSecret);
-		this.tokenKey = tokenKey;
-		this.tokenSecret = Secret.fromString(tokenSecret);
-	}
+    @DataBoundConstructor
+    public FigShareOAuthCredentialsImpl(@CheckForNull String id, @NonNull @CheckForNull String name,
+            @CheckForNull String description, @CheckForNull String clientKey, @CheckForNull String clientSecret,
+            @CheckForNull String tokenKey, @CheckForNull String tokenSecret) {
+        super(id, name);
+        this.name = name;
+        this.description = description;
+        this.clientKey = clientKey;
+        this.clientSecret = Secret.fromString(clientSecret);
+        this.tokenKey = tokenKey;
+        this.tokenSecret = Secret.fromString(tokenSecret);
+    }
 
-	@NonNull
-	@Override
-	public String getName() {
-		return name;
-	}
+    @NonNull
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@NonNull
-	@Override
-	public String getDescription() {
-		return description;
-	}
+    @NonNull
+    @Override
+    public String getDescription() {
+        return description;
+    }
 
-	@NonNull
-	@Override
-	public String getClientKey() {
-		return clientKey;
-	}
+    @NonNull
+    @Override
+    public String getClientKey() {
+        return clientKey;
+    }
 
-	@NonNull
-	@Override
-	public Secret getClientSecret() {
-		return clientSecret;
-	}
+    @NonNull
+    @Override
+    public Secret getClientSecret() {
+        return clientSecret;
+    }
 
-	@NonNull
-	@Override
-	public String getTokenKey() {
-		return tokenKey;
-	}
+    @NonNull
+    @Override
+    public String getTokenKey() {
+        return tokenKey;
+    }
 
-	@NonNull
-	@Override
-	public Secret getTokenSecret() {
-		return tokenSecret;
-	}
+    @NonNull
+    @Override
+    public Secret getTokenSecret() {
+        return tokenSecret;
+    }
 
-	/**
-	 * figshare OAuth credentials descriptor.
-	 *
-	 * @author Bruno P. Kinoshita
-	 * @since 0.1
-	 */
-	@Extension
-	public static class Descriptor extends CredentialsDescriptor {
+    /**
+     * figshare OAuth credentials descriptor.
+     *
+     * @author Bruno P. Kinoshita
+     * @since 0.1
+     */
+    @Extension
+    public static class Descriptor extends CredentialsDescriptor {
 
-		/*
-		 * (non-Javadoc)
-		 * @see hudson.model.Descriptor#getDisplayName()
-		 */
-		@Override
-		public String getDisplayName() {
-			return "figshare OAuth Credentials";
-		}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see hudson.model.Descriptor#getDisplayName()
+         */
+        @Override
+        public String getDisplayName() {
+            return "figshare OAuth Credentials";
+        }
 
-	}
+    }
 
 }

@@ -40,13 +40,16 @@ import com.cloudbees.plugins.credentials.CredentialsNameProvider;
  */
 public class FigShareCredentialsNameProvider extends CredentialsNameProvider<FigShareOauthCredentials> {
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.cloudbees.plugins.credentials.CredentialsNameProvider#getName(com.cloudbees.plugins.credentials.Credentials)
-	 */
-	@Override
-	public String getName(FigShareOauthCredentials figshareOauthCredential) {
-		return figshareOauthCredential.getName();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.cloudbees.plugins.credentials.CredentialsNameProvider#getName(com.
+     * cloudbees.plugins.credentials.Credentials)
+     */
+    @Override
+    public String getName(FigShareOauthCredentials figshareOauthCredential) {
+        return figshareOauthCredential.getName();
+    }
 
 }

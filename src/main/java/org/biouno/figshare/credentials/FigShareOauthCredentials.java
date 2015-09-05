@@ -35,46 +35,46 @@ import hudson.util.Secret;
  */
 public interface FigShareOauthCredentials extends Credentials {
 
-	/**
-	 * Credentials name.
-	 *
-	 * @return credentials name
-	 */
-	String getName();
+    /**
+     * Credentials name.
+     *
+     * @return credentials name
+     */
+    String getName();
 
-	/**
-	 * Credentials description.
-	 *
-	 * @return credentials description
-	 */
-	String getDescription();
+    /**
+     * Credentials description.
+     *
+     * @return credentials description
+     */
+    String getDescription();
 
-	/**
-	 * figshare client key.
-	 *
-	 * @return figshare client key
-	 */
-	String getClientKey();
+    /**
+     * figshare client key.
+     *
+     * @return figshare client key
+     */
+    String getClientKey();
 
-	/**
-	 * figshare client secret.
-	 *
-	 * @return figshare client secret
-	 */
-	Secret getClientSecret();
+    /**
+     * figshare client secret.
+     *
+     * @return figshare client secret
+     */
+    Secret getClientSecret();
 
-	/**
-	 * figshare token key.
-	 *
-	 * @return figshare token key
-	 */
-	String getTokenKey();
+    /**
+     * figshare token key.
+     *
+     * @return figshare token key
+     */
+    String getTokenKey();
 
-	/**
-	 * figshare token secret.
-	 *
-	 * @return figshare token secret
-	 */
-	Secret getTokenSecret();
+    /**
+     * figshare token secret.
+     *
+     * @return figshare token secret
+     */
+    Secret getTokenSecret();
 
 }
