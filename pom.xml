@@ -90,4 +90,17 @@
 		</plugins>
 	</build>
 
+	<distributionManagement>
+		<repository>
+			<id>jenkins.repo.release</id>
+			<name>Repository for Releases</name>
+			<url>${jenkins.repo.path}/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>jenkins.repo.snapshot</id>
+			<name>Repository for Snapshots</name>
+			<url>${jenkins.repo.path}/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>
