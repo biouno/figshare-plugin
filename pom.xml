@@ -11,7 +11,7 @@
 
 	<groupId>org.biouno</groupId>
 	<artifactId>figshare</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>hpi</packaging>
 
 	<name>figshare Plug-in</name>
@@ -35,7 +35,7 @@
 		<connection>scm:git:git://github.com/biouno/figshare-plugin.git</connection>
 		<developerConnection>scm:git:git@github.com:biouno/figshare-plugin.git</developerConnection>
 		<url>http://github.com/biouno/figshare-plugin</url>
-		<tag>HEAD</tag>
+		<tag>figshare-0.1</tag>
 	</scm>
 
 	<developers>
