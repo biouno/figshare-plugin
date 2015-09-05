@@ -1,5 +1,1 @@
-
-- Use the Credentials Plug-in to store OAuth data
-- Use ant patterns to match files in the build workspace
-- Use the figshare API to upload files to figshare
-- If we release to Jenkins, add tag credentials-consumer to Wiki
+- If released to Jenkins, add tag credentials-consumer to Wiki
